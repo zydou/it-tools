@@ -18,9 +18,13 @@ export const ToolPage: Component = () => {
   const ToolComponent = lazy(toolDefinition.entryFile);
 
   const [toolDict] = createResource(getLocale, async (locale) => {
-    const [dict = { default: {} }] = await safely(import(`../definitions/${toolDefinition.dirName}/locales/${locale}.json`));
+    const [dict, error] = await safely(import(`../definitions/${toolDefinition.dirName}/locales/${locale}.json`));
 
-    return dict;
+    if (error) {
+      console.error(error);
+    }
+
+    return dict ?? { default: {} };
   });
 
   return (
