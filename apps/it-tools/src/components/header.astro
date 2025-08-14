@@ -1,0 +1,60 @@
+---
+import { LanguagePicker } from "./language-picker";
+import { Button } from "./ui/button";
+
+const { lang } = Astro.params;
+
+---
+
+<header class="fixed top-0 w-full z-50 bg-background/50 backdrop-blur-sm">
+    <div class="max-w-screen-lg mx-auto px-6 py-3 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+        <a href={lang ? `/${lang}` : "/"} class="flex items-center gap-2 group">
+            <span class="i-solar-programming-line-duotone flex-shrink-0 size-6 group-hover:rotate-12 transition-transform"></span>
+            <span class="font-semibold">IT-Tools</span>
+        </a>
+
+        <span class="text-sm text-muted-foreground font-medium hidden sm:block">
+            Handy online tools.
+        </span>
+    </div>
+
+        <div class="flex items-center gap-1">
+            <Button variant="ghost" size="icon" class="size-8">
+                <span class="i-tabler-search flex-shrink-0 size-4"></span>
+            </Button>
+
+            <Button variant="ghost" size="icon" class="size-8 toggle-theme">
+                <span class="i-tabler-moon flex-shrink-0 hidden dark:block size-4"></span>
+                <span class="i-tabler-sun flex-shrink-0 block dark:hidden size-4"></span>
+            </Button>
+
+            <LanguagePicker client:load />
+
+            <Button variant="ghost" size="icon" class="size-8" as="a" href="https://github.com/CorentinTh/it-tools" target="_blank" rel="noopener noreferrer">
+                <span class="i-tabler-brand-github flex-shrink-0 size-4"></span>
+            </Button>
+
+            <Button variant="outline" size="sm" as="a" href="https://www.buymeacoffee.com/cthmsst" target="_blank" rel="noopener noreferrer">
+                Buy me a coffee
+            </Button>
+        </div>
+    </div>
+</header>
+
+
+<script>
+    const themeButtons = document.querySelectorAll("button.toggle-theme");
+
+    themeButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            const localStorageTheme = localStorage.getItem("it-tools-theme");
+            const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            const theme = localStorageTheme ?? systemTheme;
+            const newTheme = theme === "dark" ? "light" : "dark";
+
+            localStorage.setItem("it-tools-theme", newTheme);
+            document.documentElement.setAttribute("data-kb-theme", newTheme);
+        });
+    });
+</script>

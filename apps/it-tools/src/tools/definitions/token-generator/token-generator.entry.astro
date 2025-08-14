@@ -1,0 +1,49 @@
+---
+import { defaultLocale, locales, type LocaleKey } from "@/i18n/languages";
+import BaseLayout from "@/layouts/base.layout.astro";
+import { TokenGenerator as TokenGeneratorComponent } from "@/tools/definitions/token-generator/token-generator";
+
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    ...locales.map((lang) => ({params: { lang },}))
+  ];
+}
+
+const { lang = defaultLocale } = Astro.params;
+const { default: toolTranslations } = await import(`./i18n/${lang}.ts`);
+
+async function getContent(lang: LocaleKey) {
+  try {
+    return await  import(`./i18n/${lang}.md`).then(module => module.default);
+  } catch (error) {
+    return await import(`./i18n/en.md`).then(module => module.default);
+  }
+}
+
+
+const Content = await getContent(lang);
+
+
+---
+<BaseLayout>
+  <div class="max-w-screen-md mx-auto px-6 py-12 mt-12">
+    <div class="flex flex-col sm:items-center gap-4 mb-2">
+      <span class="flex-shrink-0 size-10 flex items-center justify-center bg-muted rounded-md p-2">
+        <span class="i-tabler-key flex-shrink-0 size-6"></span>
+      </span>
+      <h1 class="text-3xl font-bold text-center">{toolTranslations.title}</h1>
+    </div>
+    <!-- <p class="text-sm text-muted-foreground mb-6 text-center text-balance">{toolTranslations.description}</p> -->
+
+      <TokenGeneratorComponent client:load data={toolTranslations} />
+	</div>
+
+
+  <div class="border-b w-full my-12"></div>
+  <div class="prose max-w-screen-md mx-auto pb-24 dark:prose-invert px-6">
+    <Content />
+  </div>
+</BaseLayout>
+ 

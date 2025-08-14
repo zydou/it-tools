@@ -1,0 +1,72 @@
+---
+import { getStaticPaths } from "@/i18n/i18n.routing";
+import { defaultLocale } from "@/i18n/languages";
+import BaseLayout from "@/layouts/base.layout.astro";
+import { Button } from "@/components/ui/button";
+import { toolDefinitions } from "@/tools/definitions/tools.registry";
+import ToolCard from "@/components/tool-card.astro";
+import { cn } from "@/libs/cn";
+
+export { getStaticPaths };
+
+const { lang } = Astro.params;
+const locale = lang ?? defaultLocale;
+
+const stats = [
+	{
+		label: "Tools",
+		value: toolDefinitions.length,
+	},
+	{
+		label: "Contributors",
+		value: Intl.NumberFormat('en-US').format(10),
+	},
+	{
+		label: "Self hosted instances",
+		value: Intl.NumberFormat('en-US').format(1000),
+	},
+	{
+		label: "GitHub Stars",
+		value: Intl.NumberFormat('en-US').format(1000),
+	},
+]
+---
+
+<BaseLayout>
+
+		<div class="max-w-screen-md mx-auto px-6 mt-32 flex items-center gap-12">
+			<div class="max-w-md">
+				<h1 class="text-4xl font-semibold">IT-Tools</h1>
+				<p class="text-lg text-muted-foreground mt-4">
+					The open-source and self-hostable collection of handy online tools for developers and people working in IT.
+				</p>
+			</div>
+
+			<div class={cn('i-solar-programming-line-duotone size-42 text-muted-foreground flex-shrink-0')} />
+		</div>
+
+		<!-- Stats section -->
+		<div class="px-6 mt-24 bg-muted/20 light:border-y">
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-screen-lg mx-auto">
+				{stats.map((stat) => {
+					return <div class="flex flex-col gap-2 items-center justify-center py-12">
+						<span class="text-2xl font-semibold">{stat.value}</span>
+						<span class="text-sm text-muted-foreground">{stat.label}</span>
+					</div>;
+				})}
+			</div>
+		</div>
+
+	<div class="max-w-screen-lg mx-auto px-6 py-12">
+
+
+		<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+			{toolDefinitions.map((tool) => {
+				const { icon, getLocalizedInfo } = tool;
+				const { slug, title, description } = getLocalizedInfo({locale});
+
+				return <ToolCard slug={slug} name={title} description={description} icon={icon} />;
+			})}
+		</div>
+	</div>
+</BaseLayout>

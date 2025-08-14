@@ -1,0 +1,39 @@
+---
+import { ColorModeScript } from "@kobalte/core";
+import Header from "@/components/header.astro";
+import '@/assets/app.css'
+import Footer from "@/components/footer.astro";
+import { ClientRouter } from "astro:transitions";
+import { defaultLocale } from "@/i18n/languages";
+
+const info = {
+	title: 'IT-Tools',
+	description: 'Collection of handy online tools for developers, with great UX. IT Tools is a free and open-source collection of handy online tools for developers & people working in IT.',
+};
+
+const { lang } = Astro.params;
+const locale = lang ?? defaultLocale;
+---
+
+<html lang={locale}>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{info.title}</title>
+		<meta name="description" content={info.description} />
+        <ClientRouter />
+
+        <script is:inline>function e(){document.documentElement.setAttribute("data-kb-theme",localStorage.getItem("it-tools-theme")??(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"))}e(),document.addEventListener("astro:page-load",e)</script>
+	</head>
+	<body class="bg-background text-foreground font-sans min-h-screen text-sm antialiased flex flex-col">
+
+
+            <Header />
+            <main class="flex-1">
+                <slot />
+            </main>
+            <Footer />
+	</body>
+</html>

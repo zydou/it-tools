@@ -1,0 +1,31 @@
+{
+	"name": "@it-tools/app",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro",
+		"test": "vitest run",
+		"test:watch": "vitest watch"
+	},
+	"dependencies": {
+		"@astrojs/solid-js": "^5.1.0",
+		"@kobalte/core": "^0.13.10",
+		"astro": "^5.12.0",
+		"astro-pagefind": "^1.8.3",
+		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
+		"solid-js": "^1.9.6",
+		"tailwind-merge": "^3.2.0",
+		"unocss-preset-animations": "^1.2.1"
+	},
+	"devDependencies": {
+		"@iconify-json/solar": "^1.2.2",
+		"@iconify-json/tabler": "^1.2.19",
+		"@unocss/reset": "^66.3.3",
+		"unocss": "66.1.0-beta.13",
+		"vitest": "^3.2.4"
+	}
+}

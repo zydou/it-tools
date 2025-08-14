@@ -1,0 +1,22 @@
+---
+
+import BaseLayout from "@/layouts/base.layout.astro";
+import { toolDefinitions } from "@/tools/definitions/tools.registry";
+import { defaultLocale, locales } from "@/i18n/languages";
+
+export function getStaticPaths() {
+  return [...locales, undefined].flatMap((lang) => toolDefinitions.map((tool) => ({
+    params: { lang: lang , toolSlug: tool.getLocalizedInfo({locale: lang ?? defaultLocale}).slug },
+  })));
+}
+
+const { toolSlug, lang = defaultLocale } = Astro.params;
+
+const toolDefinition = toolDefinitions.find((tool) => tool.getLocalizedInfo({locale: lang ?? defaultLocale}).slug === toolSlug)!;
+
+
+const { default: Tool } = await toolDefinition.entrypoint();
+
+---
+
+<Tool />
